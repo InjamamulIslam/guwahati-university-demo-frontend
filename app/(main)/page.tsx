@@ -4,6 +4,9 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import Link from 'next/link';
 import { fetchNotices, fetchEvents } from '@/lib/api';
+import { Award, Calendar, Users } from 'lucide-react';
+import ImageSlider from '@/components/ui/ImageSlider';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 
 // Define types for data
 interface Notice {
@@ -163,48 +166,65 @@ export default async function Home() {
             Founded in 1948, the university has a rich history of academic excellence and contributes significantly to the region's development.
           </p>
           <Button variant="outline" className="mt-4">Read More</Button>
+
+          {/* Image Slider */}
+          <ImageSlider />
+
+          {/* Achievements */}
+
         </div>
 
         {/* Quick Links / Notices */}
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl text-primary">Latest Notices</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {notices.map((notice) => (
-                <div key={notice.id} className="border-b border-border pb-2 last:border-0 last:pb-0">
-                  <Link href="#" className="block hover:text-primary transition-colors">
-                    <p className="text-sm font-medium">{notice.title}</p>
-                    <span className="text-xs text-muted-foreground">{notice.date}</span>
-                  </Link>
+          <Card className="h-full">
+            <CardHeader className="pb-2">
+              <Tabs defaultValue="notices" className="w-full">
+                <div className="flex items-center justify-between mb-4">
+                  <CardTitle className="text-xl text-primary">Updates Center</CardTitle>
+                  <TabsList>
+                    <TabsTrigger value="notices">Notices</TabsTrigger>
+                    <TabsTrigger value="events">Events</TabsTrigger>
+                  </TabsList>
                 </div>
-              ))}
-              <Button variant="ghost" size="sm" className="w-full mt-2">View All Notices</Button>
-            </CardContent>
-          </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl text-primary">Upcoming Events</CardTitle>
+                <TabsContent value="notices" className="mt-0">
+                  <CardContent className="p-0 space-y-4">
+                    {notices.map((notice) => (
+                      <div key={notice.id} className="border-b border-border pb-2 last:border-0 last:pb-0">
+                        <Link href="#" className="block hover:text-primary transition-colors">
+                          <p className="text-sm font-medium">{notice.title}</p>
+                          <span className="text-xs text-muted-foreground">{notice.date}</span>
+                        </Link>
+                      </div>
+                    ))}
+                    <Button variant="ghost" size="sm" className="w-full mt-2">View All Notices</Button>
+                  </CardContent>
+                </TabsContent>
+
+                <TabsContent value="events" className="mt-0">
+                  <CardContent className="p-0 space-y-4">
+                    {events.map((event) => (
+                      <div key={event.id} className="flex gap-3">
+                        <div className="bg-secondary/10 text-secondary-foreground p-2 rounded text-center min-w-[60px]">
+                          <span className="block text-lg font-bold">{event.date}</span>
+                          <span className="text-xs uppercase">{event.month}</span>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium">{event.title}</h4>
+                          <p className="text-xs text-muted-foreground">{event.location}</p>
+                        </div>
+                      </div>
+                    ))}
+                    <Button variant="ghost" size="sm" className="w-full mt-2">View All Events</Button>
+                  </CardContent>
+                </TabsContent>
+              </Tabs>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {events.map((event) => (
-                <div key={event.id} className="flex gap-3">
-                  <div className="bg-secondary/10 text-secondary-foreground p-2 rounded text-center min-w-[60px]">
-                    <span className="block text-lg font-bold">{event.date}</span>
-                    <span className="text-xs uppercase">{event.month}</span>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium">{event.title}</h4>
-                    <p className="text-xs text-muted-foreground">{event.location}</p>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
           </Card>
         </div>
       </div>
+
+
 
       {/* Leadership Section */}
       <section className="container mx-auto px-4 py-12">
@@ -276,6 +296,56 @@ export default async function Home() {
               </Card>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Achievements Section */}
+      <section className="container mx-auto px-4 py-12 bg-muted/30">
+        <h2 className="text-4xl font-bold text-center text-foreground mb-12">University Achievements</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* NIRF Ranking */}
+          <Card className="hover:shadow-lg transition-shadow border-primary/20">
+            <CardContent className="p-6 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/20 rounded-full flex items-center justify-center mb-4">
+                <span className="text-xl font-bold text-yellow-600">NIRF</span>
+              </div>
+              <h3 className="text-3xl font-bold text-foreground mb-2">33<sup className="text-lg">rd</sup></h3>
+              <p className="text-sm text-muted-foreground">Ranked among Top Universities in India (2025)</p>
+            </CardContent>
+          </Card>
+
+          {/* NAAC Accreditation */}
+          <Card className="hover:shadow-lg transition-shadow border-primary/20">
+            <CardContent className="p-6 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mb-4">
+                <Award className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-foreground mb-2">A+</h3>
+              <p className="text-sm text-muted-foreground">NAAC Accredited Grade (CGPA 3.60)</p>
+            </CardContent>
+          </Card>
+
+          {/* Years of Excellence */}
+          <Card className="hover:shadow-lg transition-shadow border-primary/20">
+            <CardContent className="p-6 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-4">
+                <Calendar className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-foreground mb-2">1948</h3>
+              <p className="text-sm text-muted-foreground">Established - 75+ Years of Excellence</p>
+            </CardContent>
+          </Card>
+
+          {/* Faculty Strength */}
+          <Card className="hover:shadow-lg transition-shadow border-primary/20">
+            <CardContent className="p-6 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-foreground mb-2">500+</h3>
+              <p className="text-sm text-muted-foreground">Dedicated Faculty Members</p>
+            </CardContent>
+          </Card>
         </div>
       </section>
 

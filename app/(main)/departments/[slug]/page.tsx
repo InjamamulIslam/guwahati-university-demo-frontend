@@ -123,8 +123,9 @@ const departmentData: Record<string, any> = {
     },
 };
 
-export default function DepartmentPage({ params }: { params: { slug: string } }) {
-    const dept = departmentData[params.slug];
+export default async function DepartmentPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const dept = departmentData[slug];
 
     if (!dept) {
         return (
